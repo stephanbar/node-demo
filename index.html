@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Node App</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input { padding: 5px; }
+    button { padding: 5px 10px; cursor: pointer; }
+    #status { margin-top: 10px; color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>User Registration</h2>
+  
+  <p>Enter a name to save to the server:</p>
+  <input type="text" id="nameInput" placeholder="Enter name (e.g., Steph)">
+  <button onclick="sendData()">Save User</button>
+
+  <div id="status"></div>
+
+  <script>
+    // This function runs when you click the button
+    async function sendData() {
+      const name = document.getElementById('nameInput').value;
+      const statusDiv = document.getElementById('status');
+
+      // 1. Prepare the data
+      const dataToSend = { name: name, role: "Web User" };
+
+      // 2. Send it to your Node server
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSend)
+      });
+
+      // 3. Handle the server's answer
+      const result = await response.json();
+      statusDiv.innerText = "Server says: " + result.status;
+      
+      // Clear the input box
+      document.getElementById('nameInput').value = "";
+    }
+  </script>
+
+</body>
+</html>
